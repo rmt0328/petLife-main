@@ -156,4 +156,15 @@ public class WxUserServiceImpl implements WxUserService {
         return jsonObject.getString("phoneNumber");
     }
 
+    @Override
+    public WxUserVO phoneLogin(String phone, String password) {
+        WxUser wxUser = wxUserMapper.selectOne(Wrappers.<WxUser>lambdaQuery().eq(WxUser::getPhone, phone));
+        if (ObjectUtils.isEmpty(wxUser)) {
+            log.error("手机号未注册");
+            return null;
+        }
+        log.info("执行成功[手机号码登录],phone={}", phone);
+        return WxUserVO.fromWxUser(wxUser);
+    }
+
 }

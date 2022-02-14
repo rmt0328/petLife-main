@@ -6,7 +6,7 @@ import com.lian.pet.domain.dto.WxUserDTO;
 import com.lian.pet.domain.vo.WxPhoneVO;
 import com.lian.pet.domain.vo.WxUserVO;
 import com.lian.pet.service.WxUserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("user")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
     private final WxUserService wxUserService;
 
@@ -50,6 +50,19 @@ public class UserController {
     @GetMapping("/getUserInfo")
     public AppResp<WxUserVO> getPhone(@RequestParam String openId) {
         return AppResp.succeed(wxUserService.getUserInfo(openId));
+    }
+
+    /**
+     * 手机号码登录
+     * TODO 密码验证暂未做
+     * @param phone
+     * @param password
+     * @return
+     */
+    @GetMapping("/phoneLogin")
+    public AppResp<WxUserVO> phoneLogin(@RequestParam("phone") String phone,
+                                        @RequestParam("password") String password) {
+        return AppResp.succeed(wxUserService.phoneLogin(phone, password));
     }
 
 }

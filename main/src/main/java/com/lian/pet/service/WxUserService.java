@@ -33,4 +33,12 @@ public interface WxUserService {
      * @return
      */
     WxUserVO getUserInfo(String openId);
+
+    /**
+     * 手机号码登录
+     * @param phone
+     * @param password
+     * @return
+     */
+    WxUserVO phoneLogin(String phone, String password);
 }
