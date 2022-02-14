@@ -19,7 +19,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // http.httpBasic() //basic登录
             .and()
             .authorizeRequests() // 对请求授权
-            .antMatchers("/user/**",
+            .antMatchers(
+                    // 放行Swagger start
+                    "/swagger-ui.html",
+                    "/webjars/**",
+                    "/v2/**",
+                    "/swagger-resources/**",
+                    // 放行Swagger end
+                    "/user/**",
                     "/adopt/**",
                     "/file/**",
                     "/petFind/**",
