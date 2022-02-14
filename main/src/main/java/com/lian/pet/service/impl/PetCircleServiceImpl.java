@@ -1,11 +1,15 @@
 package com.lian.pet.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lian.pet.common.basic.enums.CacheDataTypeEnum;
+import com.lian.pet.common.cache.redis.service.RedisService;
 import com.lian.pet.common.oss.aliyun.service.config.properties.AliYunOssProperties;
 import com.lian.pet.domain.dto.AddPetCircleDTO;
+import com.lian.pet.domain.dto.cache.CacheList;
 import com.lian.pet.domain.dto.QueryPetCircleDTO;
 import com.lian.pet.domain.entity.PetCircle;
 import com.lian.pet.domain.entity.WxUser;
@@ -14,9 +18,10 @@ import com.lian.pet.factory.ResponseBeanFactory;
 import com.lian.pet.mapper.PetCircleMapper;
 import com.lian.pet.mapper.WxUserMapper;
 import com.lian.pet.service.PetCircleService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,21 +32,30 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PetCircleServiceImpl implements PetCircleService {
     private final PetCircleMapper petCircleMapper;
     private final WxUserMapper wxUserMapper;
     private final AliYunOssProperties ossProperties;
+    private final RedisService redisService;
 
     @Override
     public void addPetCircle(AddPetCircleDTO req) {
         PetCircle petCircle = ResponseBeanFactory.getPetCircle(req, ossProperties.getUrlPrefix());
         petCircleMapper.insert(petCircle);
+        // 添加数据时 删除Cache数据
+        redisService.delKey(CacheDataTypeEnum.CIRCLE.name());
         log.info("执行成功[发表宠物圈]");
     }
 
     @Override
     public List<PetCircleVO> queryPetCircles(QueryPetCircleDTO req) {
+        Object obj = redisService.hGet(CacheDataTypeEnum.CIRCLE.name(), req.getPageNum().toString());
+        if (!ObjectUtils.isEmpty(obj)) {
+            CacheList cacheList = JSONObject.parseObject(obj.toString(), CacheList.class);
+            log.info("取出缓存中数据");
+            return cacheList.getPetCircleVOS();
+        }
         IPage<PetCircle> page = new Page<>(req.getPageNum(), req.getPageSize());
         IPage<PetCircle> iPage = petCircleMapper.selectPage(page, Wrappers.<PetCircle>lambdaQuery()
                 .eq(StringUtils.isNotBlank(req.getOpenId()), PetCircle::getUserId, req.getOpenId())
@@ -56,6 +70,11 @@ public class PetCircleServiceImpl implements PetCircleService {
             PetCircleVO petCircleVO = PetCircleVO.fromPetCircle(petCircle, wxUser.getNickName(), wxUser.getAvatarUrl(), ossProperties.getUrlPrefix());
             petCircleVOS.add(petCircleVO);
         });
+        // 缓存列表数据
+        redisService.hPut(CacheDataTypeEnum.CIRCLE.name(), req.getPageNum().toString(),
+                JSONObject.toJSONString(CacheList.builder()
+                .petCircleVOS(petCircleVOS)
+                .build()));
         log.info("执行成功[查询宠物圈列表]");
         return petCircleVOS;
     }

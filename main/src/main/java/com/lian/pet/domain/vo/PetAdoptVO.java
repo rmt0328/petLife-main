@@ -4,6 +4,7 @@ import com.lian.pet.common.basic.utils.DateUtil;
 import com.lian.pet.domain.entity.PetAdopt;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.util.ObjectUtils;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
  * @Author: Lian
  * @Time: 2022/1/25 18:25
  */
+@AllArgsConstructor
 @Data
 @Builder
 @ApiModel("查询领养")
