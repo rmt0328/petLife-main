@@ -138,6 +138,7 @@ public class ResponseBeanFactory {
         comment.setOwnerId(req.getOwnerId());
         comment.setParentId(req.getParentId());
         comment.setContent(req.getContent());
+        comment.setType(req.getType());
         return comment;
     }
 

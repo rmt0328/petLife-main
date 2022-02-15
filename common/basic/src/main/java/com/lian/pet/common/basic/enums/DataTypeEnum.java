@@ -5,7 +5,7 @@ package com.lian.pet.common.basic.enums;
  * @Author: Lian
  * @Time: 2022/2/14 17:24
  */
-public enum CacheDataTypeEnum {
+public enum DataTypeEnum {
     /** 宠物领养 */
     ADOPT,
     /** 寻宠 */

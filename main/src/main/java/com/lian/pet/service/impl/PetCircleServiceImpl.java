@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lian.pet.common.basic.enums.CacheDataTypeEnum;
+import com.lian.pet.common.basic.enums.DataTypeEnum;
 import com.lian.pet.common.cache.redis.service.RedisService;
 import com.lian.pet.common.oss.aliyun.service.config.properties.AliYunOssProperties;
 import com.lian.pet.domain.dto.AddPetCircleDTO;
@@ -44,13 +44,13 @@ public class PetCircleServiceImpl implements PetCircleService {
         PetCircle petCircle = ResponseBeanFactory.getPetCircle(req, ossProperties.getUrlPrefix());
         petCircleMapper.insert(petCircle);
         // 添加数据时 删除Cache数据
-        redisService.delKey(CacheDataTypeEnum.CIRCLE.name());
+        redisService.delKey(DataTypeEnum.CIRCLE.name());
         log.info("执行成功[发表宠物圈]");
     }
 
     @Override
     public List<PetCircleVO> queryPetCircles(QueryPetCircleDTO req) {
-        Object obj = redisService.hGet(CacheDataTypeEnum.CIRCLE.name(), req.getPageNum().toString());
+        Object obj = redisService.hGet(DataTypeEnum.CIRCLE.name(), req.getPageNum().toString());
         if (!ObjectUtils.isEmpty(obj)) {
             CacheList cacheList = JSONObject.parseObject(obj.toString(), CacheList.class);
             log.info("取出缓存中数据");
@@ -71,7 +71,7 @@ public class PetCircleServiceImpl implements PetCircleService {
             petCircleVOS.add(petCircleVO);
         });
         // 缓存列表数据
-        redisService.hPut(CacheDataTypeEnum.CIRCLE.name(), req.getPageNum().toString(),
+        redisService.hPut(DataTypeEnum.CIRCLE.name(), req.getPageNum().toString(),
                 JSONObject.toJSONString(CacheList.builder()
                 .petCircleVOS(petCircleVOS)
                 .build()));

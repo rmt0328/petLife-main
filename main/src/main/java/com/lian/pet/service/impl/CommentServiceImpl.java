@@ -13,7 +13,6 @@ import com.lian.pet.service.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,8 +37,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentVO> queryCommentsByFromId(Integer fromId) {
-        List<Comment> comments = commentMapper.selectList(Wrappers.<Comment>lambdaQuery().eq(Comment::getFromId, fromId));
+    public List<CommentVO> queryCommentsByFromId(Integer fromId, String type) {
+        List<Comment> comments = commentMapper.selectList(Wrappers.<Comment>lambdaQuery()
+                .eq(Comment::getFromId, fromId)
+                .eq(Comment::getType, type));
         if (comments.isEmpty()) {
             return null;
         }
@@ -62,8 +63,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Integer queryCount(Integer fromId) {
-        Integer count = commentMapper.selectCount(Wrappers.<Comment>lambdaQuery().eq(Comment::getFromId, fromId));
+    public Integer queryCount(Integer fromId, String type) {
+        Integer count = commentMapper.selectCount(Wrappers.<Comment>lambdaQuery()
+                .eq(Comment::getFromId, fromId)
+                .eq(Comment::getType, type));
         log.info("执行成功[查询评论数量],fromId={}", fromId);
         return count;
     }

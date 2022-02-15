@@ -22,4 +22,6 @@ public class AddCommentDTO {
     private Integer formId;
     @ApiModelProperty(value = "评论内容")
     private String content;
+    @ApiModelProperty(value = "type", notes = "ADOPT FIND CIRCLE")
+    private String type;
 }

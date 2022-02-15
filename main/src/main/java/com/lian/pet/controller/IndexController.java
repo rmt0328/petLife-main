@@ -35,6 +35,6 @@ public class IndexController {
     @ResponseBody
     @GetMapping("/getFlag")
     public AppResp<Boolean> getFlag() {
-        return AppResp.succeed(true);
+        return AppResp.succeed(false);
     }
 }

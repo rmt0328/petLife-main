@@ -35,21 +35,25 @@ public class CommentController {
     /**
      * 查询评论列表 By FromId
      * @param fromId
+     * @param type
      * @return
      */
     @GetMapping("queryComments")
-    public AppResp<List<CommentVO>> queryCommentsByFromId(@RequestParam("fromId") Integer fromId) {
-        return AppResp.succeed(commentService.queryCommentsByFromId(fromId));
+    public AppResp<List<CommentVO>> queryCommentsByFromId(@RequestParam("fromId") Integer fromId,
+                                                          @RequestParam("type") String type) {
+        return AppResp.succeed(commentService.queryCommentsByFromId(fromId, type));
     }
 
     /**
      * 查询评论数 By FromId
      * @param fromId
+     * @param type
      * @return
      */
     @GetMapping("queryCount")
-    public AppResp<Integer> queryCount(@RequestParam("fromId") Integer fromId) {
-        return AppResp.succeed(commentService.queryCount(fromId));
+    public AppResp<Integer> queryCount(@RequestParam("fromId") Integer fromId,
+                                       @RequestParam("type") String type) {
+        return AppResp.succeed(commentService.queryCount(fromId, type));
     }
 
     /**

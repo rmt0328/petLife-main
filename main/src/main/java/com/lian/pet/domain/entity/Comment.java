@@ -36,6 +36,11 @@ public class Comment implements Serializable {
     private String content;
 
     /**
+     * 类型 ADOPT FIND CIRCLE
+     */
+    private String type;
+
+    /**
      * 所属文章ID
      */
     private Integer fromId;

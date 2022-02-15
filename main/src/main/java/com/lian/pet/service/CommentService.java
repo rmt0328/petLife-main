@@ -20,16 +20,18 @@ public interface CommentService {
     /**
      * 查询评论
      * @param fromId
+     * @param type
      * @return
      */
-    List<CommentVO> queryCommentsByFromId(Integer fromId);
+    List<CommentVO> queryCommentsByFromId(Integer fromId, String type);
 
     /**
      * 查询评论总数
      * @param fromId
+     * @param type
      * @return
      */
-    Integer queryCount(Integer fromId);
+    Integer queryCount(Integer fromId, String type);
 
     /**
      * 点赞
