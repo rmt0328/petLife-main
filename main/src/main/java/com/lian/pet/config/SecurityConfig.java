@@ -16,6 +16,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .formLogin() // 表单登录。跳转到security默认的登录表单页
+            .loginPage("/index/login")
             // http.httpBasic() //basic登录
             .and()
             .authorizeRequests() // 对请求授权
@@ -26,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/v2/**",
                     "/swagger-resources/**",
                     // 放行Swagger end
+                    "/index/**",
                     "/user/**",
                     "/adopt/**",
                     "/file/**",
