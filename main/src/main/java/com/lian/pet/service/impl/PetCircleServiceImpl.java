@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,7 +51,8 @@ public class PetCircleServiceImpl implements PetCircleService {
 
     @Override
     public List<PetCircleVO> queryPetCircles(QueryPetCircleDTO req) {
-        Object obj = redisService.hGet(DataTypeEnum.CIRCLE.name(), req.getPageNum().toString());
+        String cacheField = req.getPageNum().toString().concat(StringUtils.isNotBlank(req.getOpenId()) ? req.getOpenId() : "");
+        Object obj = redisService.hGet(DataTypeEnum.CIRCLE.name(), cacheField);
         if (!ObjectUtils.isEmpty(obj)) {
             CacheList cacheList = JSONObject.parseObject(obj.toString(), CacheList.class);
             log.info("取出缓存中数据");
@@ -62,7 +64,7 @@ public class PetCircleServiceImpl implements PetCircleService {
                 .orderByDesc(PetCircle::getUpdateTime));
         List<PetCircle> petCircles = iPage.getRecords();
         if (petCircles.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
         List<PetCircleVO> petCircleVOS = new ArrayList<>();
         petCircles.forEach(petCircle -> {
@@ -71,7 +73,7 @@ public class PetCircleServiceImpl implements PetCircleService {
             petCircleVOS.add(petCircleVO);
         });
         // 缓存列表数据
-        redisService.hPut(DataTypeEnum.CIRCLE.name(), req.getPageNum().toString(),
+        redisService.hPut(DataTypeEnum.CIRCLE.name(), cacheField,
                 JSONObject.toJSONString(CacheList.builder()
                 .petCircleVOS(petCircleVOS)
                 .build()));

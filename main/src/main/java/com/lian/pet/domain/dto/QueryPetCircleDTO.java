@@ -12,5 +12,8 @@ import lombok.Data;
 @Data
 @ApiModel("查询宠物圈")
 public class QueryPetCircleDTO extends BasePageQueryReq {
+    /**
+     * 查询用户发布的列表时用到
+     */
     private String openId;
 }
