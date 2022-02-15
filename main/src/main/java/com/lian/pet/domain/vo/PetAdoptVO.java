@@ -54,9 +54,6 @@ public class PetAdoptVO {
     @ApiModelProperty(value = "总数")
     private String count;
 
-    @ApiModelProperty(value = "标识", notes = "控制小程序tabber显隐,true-隐藏 false-显示")
-    private Boolean flag;
-
     public static PetAdoptVO fromPetAdopt(PetAdopt entity) {
         return PetAdoptVO.builder()
                 .id(entity.getId())
@@ -77,8 +74,6 @@ public class PetAdoptVO {
                 .updateTime(ObjectUtils.isEmpty(entity.getUpdateTime())
                         ? DateUtil.dateToString(entity.getCreateTime())
                         : DateUtil.dateToString(entity.getUpdateTime()))
-                // 上传微信审核时 设置为true
-                .flag(true)
                 .build();
     }
 

@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
 import java.util.Arrays;
 import java.util.List;
@@ -30,15 +29,12 @@ public class PetCircleVO {
     private List<String> pictures;
     @ApiModelProperty(value = "更新时间")
     private String updateTime;
-
     @ApiModelProperty(value = "用户ID")
     private String userId;
     @ApiModelProperty(value = "用户名")
     private String nickname;
     @ApiModelProperty(value = "用户头像")
     private String avatarUrl;
-
-    // TODO 评论列表
 
     public static PetCircleVO fromPetCircle(PetCircle entity, String nickname, String avatarUrl, String urlPrefix) {
         return PetCircleVO.builder()
