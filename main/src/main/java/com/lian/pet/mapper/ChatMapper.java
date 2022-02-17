@@ -29,8 +29,8 @@ public interface ChatMapper extends BaseMapper<Chat> {
      */
     @Select("SELECT * FROM " +
             "(SELECT * FROM `chat` WHERE to_id = #{userId} or from_id = #{userId} " +
-                "ORDER BY create_time DESC LIMIT 99) a " +
-            "GROUP BY a.from_id " +
+                "ORDER BY create_time DESC LIMIT 999) a " +
+            "GROUP BY a.from_id,a.to_id " +
             "ORDER BY a.create_time DESC")
     List<Chat> queryChatsOrderBy(String userId);
 }

@@ -18,6 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @Desc:
@@ -59,13 +64,15 @@ public class ChatServiceImpl implements ChatService {
         List<Chat> chats = chatMapper.queryChatsOrderBy(userId);
         if (chats.isEmpty()) {
             log.info("未查到消息,userId={}", userId);
-            return null;
+            return Collections.emptyList();
         }
         List<ChatCountVO> chatCountVOS = new ArrayList<>();
         chats.forEach(chat -> {
-            // 排除自己
+            // 发送者是自己时 调换ID 方便前端展示
             if (userId.equals(chat.getFromId())) {
-                return;
+                String temId = chat.getToId();
+                chat.setToId(chat.getFromId());
+                chat.setFromId(temId);
             }
             WxUser wxUser = wxUserMapper.selectOne(Wrappers.<WxUser>lambdaQuery()
                     .eq(WxUser::getOpenId, chat.getFromId()));
@@ -76,7 +83,7 @@ public class ChatServiceImpl implements ChatService {
                     .eq(Chat::getIsDone, "0"));
             ChatCountVO chatCountVO = ChatCountVO.builder()
                     .count(count)
-                    .latestContent(chats.get(0).getContent())
+                    .latestContent(chat.getContent())
                     .userId(wxUser.getOpenId())
                     .nickname(wxUser.getNickName())
                     .avatarUrl(wxUser.getAvatarUrl())
@@ -84,8 +91,17 @@ public class ChatServiceImpl implements ChatService {
                     .build();
             chatCountVOS.add(chatCountVO);
         });
+        // 根据userId去重
+        List<ChatCountVO> collect = chatCountVOS.stream()
+                .filter(distinctByKey(ChatCountVO::getUserId))
+                .collect(Collectors.toList());
         log.info("执行成功[查询聊天消息数量]");
-        return chatCountVOS;
+        return collect;
+    }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
     @Override
