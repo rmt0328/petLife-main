@@ -8,6 +8,7 @@ import com.lian.pet.common.basic.enums.FinishStatusEnum;
 import com.lian.pet.common.oss.aliyun.service.config.properties.AliYunOssProperties;
 import com.lian.pet.domain.dto.AddPetAdoptDTO;
 import com.lian.pet.domain.dto.QueryAdoptDTO;
+import com.lian.pet.domain.dto.QueryAdoptsInDTO;
 import com.lian.pet.domain.entity.PetAdopt;
 import com.lian.pet.domain.entity.WxUser;
 import com.lian.pet.domain.vo.AdoptAndUserVO;
@@ -22,6 +23,7 @@ import com.lian.pet.service.PetFindService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,5 +98,23 @@ public class PetAdoptServiceImpl implements PetAdoptService {
                 .petAdoptCount(petAdoptCount)
                 .petFindCount(petFindCount)
                 .build();
+    }
+
+    @Override
+    public List<PetAdoptVO> queryAdoptsInIds(QueryAdoptsInDTO req) {
+        if (req.getIds().isEmpty()) {
+            return Collections.emptyList();
+        }
+        Page<PetAdopt> page = new Page<>(req.getPageNum(), req.getPageSize());
+        Page<PetAdopt> iPage = petAdoptMapper.selectPage(page, Wrappers.<PetAdopt>lambdaQuery()
+                .in(PetAdopt::getId, req.getIds()));
+        List<PetAdopt> petAdopts = iPage.getRecords();
+        if (petAdopts.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<PetAdoptVO> petAdoptVOS = petAdopts.stream()
+                .map(PetAdoptVO::fromPetAdopt).collect(Collectors.toList());
+        log.info("执行成功[查询领养列表]");
+        return petAdoptVOS;
     }
 }

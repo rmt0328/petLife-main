@@ -4,12 +4,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @Desc: 分页
  * @Author: Lian
  * @Time: 2022/1/25 18:32
  */
+@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

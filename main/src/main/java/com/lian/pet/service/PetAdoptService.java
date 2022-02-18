@@ -2,6 +2,7 @@ package com.lian.pet.service;
 
 import com.lian.pet.domain.dto.AddPetAdoptDTO;
 import com.lian.pet.domain.dto.QueryAdoptDTO;
+import com.lian.pet.domain.dto.QueryAdoptsInDTO;
 import com.lian.pet.domain.vo.AdoptAndUserVO;
 import com.lian.pet.domain.vo.PetAdoptVO;
 import com.lian.pet.domain.vo.PetCountVO;
@@ -40,4 +41,11 @@ public interface PetAdoptService {
      * @return
      */
     PetCountVO queryCount(String openId);
+
+    /**
+     * 查询领养列表 in ids
+     * @param req
+     * @return
+     */
+    List<PetAdoptVO> queryAdoptsInIds(QueryAdoptsInDTO req);
 }
