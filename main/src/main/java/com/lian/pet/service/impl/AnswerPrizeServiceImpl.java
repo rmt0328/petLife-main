@@ -37,6 +37,8 @@ public class AnswerPrizeServiceImpl implements AnswerPrizeService {
     public AnswerPrizeVO getAnswerPrize(String answerId) {
         List<AnswerPrize> answerPrizes = answerPrizeMapper.selectList(Wrappers.<AnswerPrize>lambdaQuery()
                 .eq(StringUtils.isNotBlank(answerId), AnswerPrize::getId, answerId)
+                .ge(AnswerPrize::getCreateTime, DateUtil.getCurrentTime().substring(0, 11).concat("00:00:00"))
+                .le(AnswerPrize::getCreateTime, DateUtil.getCurrentTime().substring(0, 11).concat("23:59:59"))
                 .orderByDesc(AnswerPrize::getCreateTime));
         if (answerPrizes.isEmpty()) {
             return null;
@@ -85,7 +87,7 @@ public class AnswerPrizeServiceImpl implements AnswerPrizeService {
                     .subject(answerPrize.getSubject())
                     .answerId(collectUserAnswer.getAnswerId())
                     .type(collectUserAnswer.getType())
-                    .time(DateUtil.dateToString(collectUserAnswer.getCreateTime()))
+                    .time(DateUtil.dateToString(collectUserAnswer.getCreateTime()).substring(0, 10))
                     .build());
         });
         log.info("执行成功[查询答题记录],userId={}", req.getUserId());
