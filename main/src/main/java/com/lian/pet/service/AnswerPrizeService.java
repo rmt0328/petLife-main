@@ -15,9 +15,10 @@ public interface AnswerPrizeService {
 
     /**
      * 查询题目
+     * @param answerId
      * @return
      */
-    AnswerPrizeVO getAnswerPrize();
+    AnswerPrizeVO getAnswerPrize(String answerId);
 
     /**
      * 用户答题 存储记录

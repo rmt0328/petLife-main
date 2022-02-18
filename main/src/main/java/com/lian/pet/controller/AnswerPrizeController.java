@@ -28,8 +28,8 @@ public class AnswerPrizeController {
      * @return
      */
     @GetMapping("getAnswerPrize")
-    public AppResp<AnswerPrizeVO> getAnswerPrize(){
-        return AppResp.succeed(answerPrizeService.getAnswerPrize());
+    public AppResp<AnswerPrizeVO> getAnswerPrize(@RequestParam(value = "answerId", required = false) String answerId){
+        return AppResp.succeed(answerPrizeService.getAnswerPrize(answerId));
     }
 
     /**

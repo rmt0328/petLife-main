@@ -1,6 +1,7 @@
 package com.lian.pet.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lian.pet.common.basic.utils.DateUtil;
@@ -8,7 +9,6 @@ import com.lian.pet.domain.dto.AddAnswerRecordDTO;
 import com.lian.pet.domain.dto.QueryAnswerRecordsDTO;
 import com.lian.pet.domain.entity.AnswerPrize;
 import com.lian.pet.domain.entity.CollectUserAnswer;
-import com.lian.pet.domain.entity.PetAdopt;
 import com.lian.pet.domain.vo.AnswerPrizeVO;
 import com.lian.pet.domain.vo.AnswerRecordsVO;
 import com.lian.pet.mapper.AnswerPrizeMapper;
@@ -34,8 +34,9 @@ public class AnswerPrizeServiceImpl implements AnswerPrizeService {
     private final CollectUserAnswerMapper collectUserAnswerMapper;
 
     @Override
-    public AnswerPrizeVO getAnswerPrize() {
+    public AnswerPrizeVO getAnswerPrize(String answerId) {
         List<AnswerPrize> answerPrizes = answerPrizeMapper.selectList(Wrappers.<AnswerPrize>lambdaQuery()
+                .eq(StringUtils.isNotBlank(answerId), AnswerPrize::getId, answerId)
                 .orderByDesc(AnswerPrize::getCreateTime));
         if (answerPrizes.isEmpty()) {
             return null;
