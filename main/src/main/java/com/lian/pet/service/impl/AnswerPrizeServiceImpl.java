@@ -37,8 +37,8 @@ public class AnswerPrizeServiceImpl implements AnswerPrizeService {
     public AnswerPrizeVO getAnswerPrize(String answerId) {
         List<AnswerPrize> answerPrizes = answerPrizeMapper.selectList(Wrappers.<AnswerPrize>lambdaQuery()
                 .eq(StringUtils.isNotBlank(answerId), AnswerPrize::getId, answerId)
-                .ge(AnswerPrize::getCreateTime, DateUtil.getCurrentTime().substring(0, 11).concat("00:00:00"))
-                .le(AnswerPrize::getCreateTime, DateUtil.getCurrentTime().substring(0, 11).concat("23:59:59"))
+                .ge(StringUtils.isBlank(answerId), AnswerPrize::getCreateTime, DateUtil.getCurrentTime().substring(0, 11).concat("00:00:00"))
+                .le(StringUtils.isBlank(answerId), AnswerPrize::getCreateTime, DateUtil.getCurrentTime().substring(0, 11).concat("23:59:59"))
                 .orderByDesc(AnswerPrize::getCreateTime));
         if (answerPrizes.isEmpty()) {
             return null;
