@@ -40,7 +40,9 @@ public enum AppErrorEnum implements ErrorEnumDefine {
 
     GET_ROLE_FAILED(10003, "msg.api.err.get_role_failed", "get role failed"),
 
-    ADD_USER_ROLE_FAILED(10004, "msg.api.err.add_user_role_failed", "add user role failed")
+    ADD_USER_ROLE_FAILED(10004, "msg.api.err.add_user_role_failed", "add user role failed"),
+
+    DUPLICATE_SUBMIT(10010, "", "duplicate submit")
     ;
 
     private final int code;

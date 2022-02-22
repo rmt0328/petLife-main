@@ -1,5 +1,6 @@
 package com.lian.pet.controller;
 
+import com.lian.pet.common.basic.exception.AppErrorEnum;
 import com.lian.pet.common.basic.response.AppResp;
 import com.lian.pet.domain.dto.AddPetAdoptDTO;
 import com.lian.pet.domain.dto.QueryAdoptDTO;
@@ -34,8 +35,7 @@ public class PetAdoptController {
     public AppResp<Void> addPetAdopt(@RequestBody AddPetAdoptDTO req) {
         if (ObjectUtils.isEmpty(req.getOpenId())) {
             log.error("终止流程[openId为空]");
-            // TODO code值统一定义管理
-            return AppResp.failed(104, "openId为空！！");
+            return AppResp.failed(AppErrorEnum.BAD_REQUEST.getCode(), AppErrorEnum.BAD_REQUEST.getDefMsg());
         }
         petAdoptService.addPetAdopt(req);
         return AppResp.succeed(null);

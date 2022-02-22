@@ -1,5 +1,6 @@
 package com.lian.pet.controller;
 
+import com.lian.pet.common.basic.exception.AppErrorEnum;
 import com.lian.pet.common.basic.response.AppResp;
 import com.lian.pet.domain.dto.AddCollectDTO;
 import com.lian.pet.domain.dto.QueryCollectDTO;
@@ -34,7 +35,7 @@ public class CollectController {
         if (collectService.addCollect(req)) {
             return AppResp.succeed(true);
         }
-        return AppResp.failed(401, "请勿重复收藏");
+        return AppResp.failed(AppErrorEnum.DUPLICATE_SUBMIT.getCode(), "请勿重复收藏");
     }
 
     /**
