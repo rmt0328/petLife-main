@@ -49,10 +49,7 @@ public class UserFollowServiceImpl implements UserFollowService {
         List<UserFollow> userFollows = userFollowMapper.selectList(Wrappers.<UserFollow>lambdaQuery()
                 .eq(UserFollow::getUserId, userId)
                 .eq(UserFollow::getFollowId, followId));
-        if (userFollows.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !userFollows.isEmpty();
     }
 
     @Override
