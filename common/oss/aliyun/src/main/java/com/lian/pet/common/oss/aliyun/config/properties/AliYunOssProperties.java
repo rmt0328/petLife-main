@@ -1,4 +1,4 @@
-package com.lian.pet.common.oss.aliyun.service.config.properties;
+package com.lian.pet.common.oss.aliyun.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

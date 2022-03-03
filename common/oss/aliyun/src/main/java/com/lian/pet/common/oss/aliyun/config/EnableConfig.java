@@ -1,5 +1,7 @@
-package com.lian.pet.common.oss.aliyun.service.config.properties;
+package com.lian.pet.common.oss.aliyun.config;
 
+import com.lian.pet.common.oss.aliyun.config.properties.AliYunOssProperties;
+import com.lian.pet.common.oss.aliyun.config.properties.AliYunProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

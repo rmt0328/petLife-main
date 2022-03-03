@@ -3,7 +3,7 @@ package com.lian.pet.common.oss.aliyun.service.impl;
 import java.io.ByteArrayInputStream;
 import com.lian.pet.common.basic.utils.DateUtil;
 import com.lian.pet.common.oss.aliyun.service.AliYunOssService;
-import com.lian.pet.common.oss.aliyun.service.config.properties.AliYunOssProperties;
+import com.lian.pet.common.oss.aliyun.config.properties.AliYunOssProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.aliyun.oss.OSSClient;

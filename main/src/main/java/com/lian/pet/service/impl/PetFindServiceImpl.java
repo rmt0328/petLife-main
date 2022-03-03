@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lian.pet.common.basic.enums.FinishStatusEnum;
 import com.lian.pet.common.basic.utils.DateUtil;
-import com.lian.pet.common.oss.aliyun.service.config.properties.AliYunOssProperties;
+import com.lian.pet.common.oss.aliyun.config.properties.AliYunOssProperties;
 import com.lian.pet.domain.dto.AddPetFindDTO;
 import com.lian.pet.domain.dto.QueryPetFindDTO;
 import com.lian.pet.domain.entity.PetFind;

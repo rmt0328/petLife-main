@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lian.pet.common.basic.enums.DataTypeEnum;
 import com.lian.pet.common.cache.redis.service.RedisService;
-import com.lian.pet.common.oss.aliyun.service.config.properties.AliYunOssProperties;
+import com.lian.pet.common.oss.aliyun.config.properties.AliYunOssProperties;
 import com.lian.pet.domain.dto.AddPetCircleDTO;
 import com.lian.pet.domain.dto.cache.CacheList;
 import com.lian.pet.domain.dto.QueryPetCircleDTO;
