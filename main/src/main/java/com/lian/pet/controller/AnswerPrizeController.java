@@ -1,6 +1,7 @@
 package com.lian.pet.controller;
 
 import com.lian.pet.common.basic.response.AppResp;
+import com.lian.pet.common.oss.aliyun.service.AliYunSmsService;
 import com.lian.pet.domain.dto.AddAnswerRecordDTO;
 import com.lian.pet.domain.dto.QueryAnswerRecordsDTO;
 import com.lian.pet.domain.vo.AnswerPrizeVO;
@@ -22,6 +23,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnswerPrizeController {
     private final AnswerPrizeService answerPrizeService;
+    private final AliYunSmsService aliYunSmsService;
+
+    /**
+     * TODO 测试手机号发送短信
+     * @param phone
+     * @throws Exception
+     */
+    @GetMapping("phone")
+    public void phone(@RequestParam("phone") String phone) throws Exception {
+        Boolean aBoolean = aliYunSmsService.sendSms(phone);
+        System.out.println("aBoolean = " + aBoolean);
+    }
 
     /**
      * 查询题目
