@@ -4,6 +4,8 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
@@ -29,7 +31,7 @@ public class AliYunSmsServiceImpl implements AliYunSmsService {
     private final AliYunProperties aliYunProperties;
 
     @Override
-    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 1.5))
+    @Retryable(value = {ServerException.class, ClientException.class}, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 1.5))
     public Boolean sendSms(String phone) throws Exception {
         // 短信API产品名称(无需修改)
         final String product = "Dysmsapi";
