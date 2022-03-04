@@ -23,18 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnswerPrizeController {
     private final AnswerPrizeService answerPrizeService;
-    private final AliYunSmsService aliYunSmsService;
-
-    /**
-     * TODO 测试手机号发送短信
-     * @param phone
-     * @throws Exception
-     */
-    @GetMapping("phone")
-    public void phone(@RequestParam("phone") String phone) throws Exception {
-        Boolean aBoolean = aliYunSmsService.sendSms(phone);
-        System.out.println("aBoolean = " + aBoolean);
-    }
 
     /**
      * 查询题目
