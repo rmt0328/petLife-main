@@ -11,6 +11,9 @@ import com.lian.pet.common.oss.aliyun.config.properties.AliYunProperties;
 import com.lian.pet.common.oss.aliyun.service.AliYunSmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import java.util.Random;
 
@@ -26,6 +29,7 @@ public class AliYunSmsServiceImpl implements AliYunSmsService {
     private final AliYunProperties aliYunProperties;
 
     @Override
+    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 1.5))
     public Boolean sendSms(String phone) throws Exception {
         // 短信API产品名称(无需修改)
         final String product = "Dysmsapi";
@@ -38,10 +42,8 @@ public class AliYunSmsServiceImpl implements AliYunSmsService {
         IAcsClient acsClient = new DefaultAcsClient(profile);
         SendSmsRequest sendSmsRequest = getSendSmsRequest(phone);
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(sendSmsRequest);
-        if (sendSmsResponse.getCode() != null && "OK".equals(sendSmsResponse.getCode())) {
-            return true;
-        }
-        return false;
+        log.info("[发送短信]phone={}, result={}", phone, sendSmsResponse.getCode());
+        return sendSmsResponse.getCode() != null && "OK".equals(sendSmsResponse.getCode());
     }
 
     /**
@@ -54,7 +56,9 @@ public class AliYunSmsServiceImpl implements AliYunSmsService {
         request.setMethod(MethodType.POST);
         // 多个手机号逗号分割 上限1000个
         request.setPhoneNumbers(phone);
+        // 短信签名
         request.setSignName("连连商城");
+        // 短信模板
         request.setTemplateCode("SMS_222860055");
         request.setTemplateParam("{\"code\": \"" + getCode() + "\"}");
         return request;
@@ -71,5 +75,17 @@ public class AliYunSmsServiceImpl implements AliYunSmsService {
             result.append(random.nextInt(10));
         }
         return result.toString();
+    }
+
+    /**
+     * 发送短信失败 写入数据库
+     * @return
+     * @throws Exception
+     */
+    @Recover
+    public Boolean recover(Exception e) throws Exception {
+        // TODO 写入数据库
+        log.warn("发送短信失败");
+        throw e;
     }
 }
