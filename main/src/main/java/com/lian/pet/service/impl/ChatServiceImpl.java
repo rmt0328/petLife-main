@@ -95,7 +95,7 @@ public class ChatServiceImpl implements ChatService {
         List<ChatCountVO> collect = chatCountVOS.stream()
                 .filter(distinctByKey(ChatCountVO::getUserId))
                 .collect(Collectors.toList());
-        log.info("执行成功[查询聊天消息数量]");
+//        log.info("执行成功[查询聊天消息数量]");
         return collect;
     }
 
@@ -144,7 +144,7 @@ public class ChatServiceImpl implements ChatService {
         Integer count = chatMapper.selectCount(Wrappers.<Chat>lambdaQuery()
                 .eq(Chat::getToId, userId)
                 .eq(Chat::getIsDone, "0"));
-        log.info("执行成功[查询未读消息总数]");
+//        log.info("执行成功[查询未读消息总数]");
         return count;
     }
 }
