@@ -25,8 +25,17 @@
         <httpclient.version>4.5.12</httpclient.version>
         <swagger2.version>2.9.2</swagger2.version>
         <aliyun-sdk.version>4.0.6</aliyun-sdk.version>
+        <p6spy.version>3.9.1</p6spy.version>
     </properties>
     <dependencies>
+        <!-- p6spy start -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>${p6spy.version}</version>
+        </dependency>
+        <!-- p6spy end -->
+
         <!-- retry重试机制 -->
         <dependency>
             <groupId>org.springframework.retry</groupId>

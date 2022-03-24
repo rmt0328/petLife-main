@@ -7,8 +7,8 @@ spring:
 
   # 数据库连接
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/pet_life?characterEncoding=utf8&useSSL=false
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/pet_life?characterEncoding=utf8&useSSL=false
     username: root
     password: root
 
@@ -40,3 +40,8 @@ wechat:
     app-id: wx49d52c9c666c7a99
     app-secret: a684baf7d99cac65f43610bd3489459d
     access-token-api-url: https://api.weixin.qq.com/sns/jscode2session
+
+# 打印 sql 语句到控制台
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
