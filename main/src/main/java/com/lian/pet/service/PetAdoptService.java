@@ -31,9 +31,10 @@ public interface PetAdoptService {
     /**
      * 获取领养信息
      * @param adoptId
+     * @param userId
      * @return
      */
-    AdoptAndUserVO getPetAdoptById(Integer adoptId);
+    AdoptAndUserVO getPetAdoptById(Integer adoptId, String userId);
 
     /**
      * 查询总数

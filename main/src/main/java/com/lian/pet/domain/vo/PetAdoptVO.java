@@ -53,15 +53,19 @@ public class PetAdoptVO {
     private String updateTime;
     @ApiModelProperty(value = "总数")
     private String count;
+    private String openId;
+    @ApiModelProperty(value = "是否已申请领养")
+    private String isApply;
 
     public static PetAdoptVO fromPetAdopt(PetAdopt entity) {
         return PetAdoptVO.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
+                .openId(entity.getOpenId())
                 .nickname(entity.getNickname())
                 .phone(entity.getPhone())
                 .type(entity.getType())
-                .sex(entity.getType())
+                .sex(entity.getSex())
                 .physicalCondition(Arrays.asList(entity.getPhysicalCondition().split(",")))
                 .age(entity.getAge())
                 .conditions(Arrays.asList(entity.getConditions().split(",")))

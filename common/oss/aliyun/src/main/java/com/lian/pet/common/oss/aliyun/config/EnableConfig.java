@@ -4,6 +4,7 @@ import com.lian.pet.common.oss.aliyun.config.properties.AliYunOssProperties;
 import com.lian.pet.common.oss.aliyun.config.properties.AliYunProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.annotation.EnableRetry;
 
 /**
  * @Desc: 激活配置类
@@ -12,5 +13,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties({AliYunOssProperties.class, AliYunProperties.class})
+@EnableRetry
 public class EnableConfig {
 }

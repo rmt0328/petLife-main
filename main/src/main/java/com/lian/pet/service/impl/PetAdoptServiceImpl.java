@@ -1,14 +1,17 @@
 package com.lian.pet.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lian.pet.common.basic.enums.FinishStatusEnum;
+import com.lian.pet.common.basic.enums.IsPassEnum;
 import com.lian.pet.common.oss.aliyun.config.properties.AliYunOssProperties;
 import com.lian.pet.domain.dto.AddPetAdoptDTO;
 import com.lian.pet.domain.dto.QueryAdoptDTO;
 import com.lian.pet.domain.dto.QueryAdoptsInDTO;
+import com.lian.pet.domain.entity.AdoptApply;
 import com.lian.pet.domain.entity.PetAdopt;
 import com.lian.pet.domain.entity.WxUser;
 import com.lian.pet.domain.vo.AdoptAndUserVO;
@@ -16,6 +19,7 @@ import com.lian.pet.domain.vo.PetAdoptVO;
 import com.lian.pet.domain.vo.PetCountVO;
 import com.lian.pet.domain.vo.WxUserVO;
 import com.lian.pet.factory.ResponseBeanFactory;
+import com.lian.pet.mapper.AdoptApplyMapper;
 import com.lian.pet.mapper.PetAdoptMapper;
 import com.lian.pet.mapper.WxUserMapper;
 import com.lian.pet.service.PetAdoptService;
@@ -40,6 +44,7 @@ public class PetAdoptServiceImpl implements PetAdoptService {
     private final AliYunOssProperties ossProperties;
     private final WxUserMapper wxUserMapper;
     private final PetFindService petFindService;
+    private final AdoptApplyMapper adoptApplyMapper;
 
     @Override
     public void addPetAdopt(AddPetAdoptDTO req) {
@@ -54,6 +59,7 @@ public class PetAdoptServiceImpl implements PetAdoptService {
         IPage<PetAdopt> iPage = petAdoptMapper.selectPage(page, Wrappers.<PetAdopt>lambdaQuery()
                 .eq(StringUtils.isNotBlank(req.getOpenId()), PetAdopt::getOpenId, req.getOpenId())
                 .eq(StringUtils.isNotBlank(req.getCity()), PetAdopt::getCity, req.getCity())
+                .orderByDesc(PetAdopt::getIsFinish)
                 .orderByDesc(PetAdopt::getCreateTime));
         List<PetAdoptVO> petAdoptVOS = iPage.getRecords().stream()
                 .map(PetAdoptVO::fromPetAdopt).collect(Collectors.toList());
@@ -62,7 +68,7 @@ public class PetAdoptServiceImpl implements PetAdoptService {
     }
 
     @Override
-    public AdoptAndUserVO getPetAdoptById(Integer adoptId) {
+    public AdoptAndUserVO getPetAdoptById(Integer adoptId, String userId) {
         PetAdopt petAdopt = petAdoptMapper.selectById(adoptId);
         PetAdopt adopt = new PetAdopt();
         adopt.setId(adoptId);
@@ -79,10 +85,28 @@ public class PetAdoptServiceImpl implements PetAdoptService {
         Integer finishedCount = petAdoptMapper.selectCount(Wrappers.<PetAdopt>lambdaQuery()
                 .eq(PetAdopt::getOpenId, wxUser.getOpenId())
                 .eq(PetAdopt::getIsFinish, FinishStatusEnum.FINISHED.code()));
+
         AdoptAndUserVO resultVO = AdoptAndUserVO.builder()
                 .petAdoptVO(PetAdoptVO.fromPetAdopt(petAdopt))
                 .wxUserVO(WxUserVO.fromWxUser(wxUser))
                 .build();
+
+        // 申请状态
+        AdoptApply adoptApply = adoptApplyMapper.selectOne(Wrappers.<AdoptApply>lambdaQuery()
+                .eq(AdoptApply::getAdoptId, adoptId)
+                .eq(AdoptApply::getUserId, userId));
+        if (ObjectUtils.isEmpty(adoptApply)) {
+            resultVO.getPetAdoptVO().setIsApply("3");
+        } else {
+            if (adoptApply.getIsPassed().equals(IsPassEnum.NO_PASS.code())) {
+                resultVO.getPetAdoptVO().setIsApply("0");
+            } else if (adoptApply.getIsPassed().equals(IsPassEnum.PASSED.code())) {
+                resultVO.getPetAdoptVO().setIsApply("1");
+            } else if (adoptApply.getIsPassed().equals(IsPassEnum.IS_AUDIT.code())) {
+                resultVO.getPetAdoptVO().setIsApply("2");
+            }
+        }
+
         resultVO.getWxUserVO().setDoingNum(finishingCount);
         resultVO.getWxUserVO().setDoneNum(finishedCount);
         log.info("执行成功[查询领养详情]adoptId={}", adoptId);
