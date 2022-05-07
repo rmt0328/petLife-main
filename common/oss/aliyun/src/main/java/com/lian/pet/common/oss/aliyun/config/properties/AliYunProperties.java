@@ -1,7 +1,6 @@
 package com.lian.pet.common.oss.aliyun.config.properties;
 
-import com.aliyun.oss.ClientConfiguration;
-import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.*;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -26,12 +25,16 @@ public class AliYunProperties {
     private String accessKeyId;
     private String accessKeySecret;
 
+    /**
+     * 新版
+     * @return
+     */
     @Bean
-    public OSSClient ossClient() {
+    public OSS ossClient() {
         // 设置超时机制和重试机制
-        ClientConfiguration conf = new ClientConfiguration();
+        ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
         conf.setConnectionTimeout(5000);
         conf.setMaxErrorRetry(3);
-        return new OSSClient(aliYunOssProperties.getEndpoint(), accessKeyId, accessKeySecret, conf);
+        return new OSSClientBuilder().build(aliYunOssProperties.getEndpoint(), accessKeyId, accessKeySecret, conf);
     }
 }

@@ -1,12 +1,12 @@
 package com.lian.pet.common.oss.aliyun.service.impl;
 
 import java.io.ByteArrayInputStream;
+import com.aliyun.oss.OSS;
 import com.lian.pet.common.basic.utils.DateUtil;
 import com.lian.pet.common.oss.aliyun.service.AliYunOssService;
 import com.lian.pet.common.oss.aliyun.config.properties.AliYunOssProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.Bucket;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
@@ -24,15 +24,15 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class AliYunOssServiceImpl implements AliYunOssService {
     private final AliYunOssProperties ossProperties;
-    private final OSSClient ossclient;
+    private final OSS ossClient;
 
     @Override
     public String createBucketName(String bucketName) {
         // 存储空间
         final String bucketNames = bucketName;
-        if (!ossclient.doesBucketExist(bucketName)) {
+        if (!ossClient.doesBucketExist(bucketName)) {
             // 创建存储空间
-            Bucket bucket = ossclient.createBucket(bucketName);
+            Bucket bucket = ossClient.createBucket(bucketName);
             log.info("创建存储空间成功");
             return bucket.getName();
         }
@@ -41,7 +41,7 @@ public class AliYunOssServiceImpl implements AliYunOssService {
 
     @Override
     public void deleteBucket(String bucketName) {
-        ossclient.deleteBucket(bucketName);
+        ossClient.deleteBucket(bucketName);
         log.info("删除" + bucketName + "Bucket成功");
     }
 
@@ -50,12 +50,12 @@ public class AliYunOssServiceImpl implements AliYunOssService {
         // 文件夹名
         final String keySuffixWithSlash = folder;
         // 判断文件夹是否存在，不存在则创建
-        if (!ossclient.doesObjectExist(bucketName, keySuffixWithSlash)) {
+        if (!ossClient.doesObjectExist(bucketName, keySuffixWithSlash)) {
             // 创建文件夹
-            ossclient.putObject(bucketName, keySuffixWithSlash, new ByteArrayInputStream(new byte[0]));
+            ossClient.putObject(bucketName, keySuffixWithSlash, new ByteArrayInputStream(new byte[0]));
             log.info("创建文件夹成功");
             // 得到文件夹名
-            OSSObject object = ossclient.getObject(bucketName, keySuffixWithSlash);
+            OSSObject object = ossClient.getObject(bucketName, keySuffixWithSlash);
             String fileDir = object.getKey();
             return fileDir;
         }
@@ -64,7 +64,7 @@ public class AliYunOssServiceImpl implements AliYunOssService {
 
     @Override
     public void deleteFile(String bucketName, String folder, String key) {
-        ossclient.deleteObject(bucketName, folder.concat(key));
+        ossClient.deleteObject(bucketName, folder.concat(key));
         log.info("删除" + bucketName + "下的文件" + folder.concat(key) + "成功");
         log.info("执行成功[删除图片]key:{}", key);
     }
@@ -91,7 +91,7 @@ public class AliYunOssServiceImpl implements AliYunOssService {
             // 指定该Object被下载时的名称（指示MINME用户代理如何显示附加的文件，打开或下载，及文件名称）
             metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
             // 上传文件 (上传文件流的形式)
-            PutObjectResult putResult = ossclient.putObject(ossProperties.getBucketName(), storePath + fileName, file.getInputStream(), metadata);
+            PutObjectResult putResult = ossClient.putObject(ossProperties.getBucketName(), storePath + fileName, file.getInputStream(), metadata);
             // 解析结果
             resultStr = storePath + fileName;
             log.info("唯一MD5数字签名:" + putResult.getETag());
