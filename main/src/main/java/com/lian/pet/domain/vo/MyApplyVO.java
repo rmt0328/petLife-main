@@ -15,6 +15,9 @@ import lombok.Data;
 @ApiModel("我申请的")
 public class MyApplyVO {
 
+    @ApiModelProperty(value = "申请ID")
+    private Integer applyId;
+
     @ApiModelProperty(value = "adoptId")
     private Integer adoptId;
 

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @Desc: Pet Adopt Service
  * @Author: Lian
- * @Time: 2022/1/24 15:29
+ * @Time: 2023/5/18 19:02
  */
 public interface PetAdoptService {
 
@@ -34,7 +34,7 @@ public interface PetAdoptService {
      * @param userId
      * @return
      */
-    AdoptAndUserVO getPetAdoptById(Integer adoptId, String userId);
+    AdoptAndUserVO getPetAdoptById(Integer adoptId, Integer applyId, String userId);
 
     /**
      * 查询总数

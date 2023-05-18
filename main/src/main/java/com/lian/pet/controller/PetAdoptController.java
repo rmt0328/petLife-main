@@ -58,8 +58,8 @@ public class PetAdoptController {
      * @return
      */
     @GetMapping("/getById")
-    public AppResp<AdoptAndUserVO> getPetAdoptById(@RequestParam("adoptId") Integer adoptId, @RequestParam("userId") String userId) {
-        return AppResp.succeed(petAdoptService.getPetAdoptById(adoptId, userId));
+    public AppResp<AdoptAndUserVO> getPetAdoptById(@RequestParam("adoptId") Integer adoptId, @RequestParam(value = "applyId", required = false) Integer applyId, @RequestParam("userId") String userId) {
+        return AppResp.succeed(petAdoptService.getPetAdoptById(adoptId, applyId, userId));
     }
 
     /**

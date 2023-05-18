@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,8 @@ public class AdoptApplyServiceImpl implements AdoptApplyService {
     public void add(AddAdoptApplyDTO dto) {
         Integer count = adoptApplyMapper.selectCount(Wrappers.<AdoptApply>lambdaQuery()
                 .eq(AdoptApply::getAdoptId, dto.getAdoptId())
-                .eq(AdoptApply::getUserId, dto.getUserId()));
+                .eq(AdoptApply::getUserId, dto.getUserId())
+                .ne(AdoptApply::getIsPassed, IsPassEnum.NO_PASS.code()));
 
         if (count > 0) {
             throw new AppException("重复申请");
@@ -74,6 +76,7 @@ public class AdoptApplyServiceImpl implements AdoptApplyService {
         adoptApplyIPage.getRecords().forEach(adoptApply -> {
             PetAdopt petAdopt = petAdoptMapper.selectById(adoptApply.getAdoptId());
             applyVOS.add(MyApplyVO.builder()
+                    .applyId(adoptApply.getId())
                     .applyName(petAdopt.getTitle())
                     .adoptId(petAdopt.getId())
                     .applyTime(DateUtil.dateToString(adoptApply.getCreateTime()))
@@ -116,6 +119,17 @@ public class AdoptApplyServiceImpl implements AdoptApplyService {
             PetAdopt petAdopt = petAdoptMapper.selectById(adoptApply.getAdoptId());
             petAdopt.setIsFinish(FinishStatusEnum.FINISHED.code());
             petAdoptMapper.updateById(petAdopt);
+
+            // 被领养时 更新其他审核中的记录为未通过
+            List<AdoptApply> adoptApplies = adoptApplyMapper.selectList(Wrappers.<AdoptApply>lambdaQuery()
+                    .eq(AdoptApply::getAdoptId, adoptApply.getAdoptId())
+                    .ne(AdoptApply::getId, adoptApply.getId()));
+            if (!CollectionUtils.isEmpty(adoptApplies)) {
+                adoptApplies.forEach(e -> {
+                    e.setIsPassed(IsPassEnum.NO_PASS.code());
+                    adoptApplyMapper.updateById(e);
+                });
+            }
         } else adoptApply.setIsPassed(IsPassEnum.NO_PASS.code());
 
         adoptApplyMapper.updateById(adoptApply);

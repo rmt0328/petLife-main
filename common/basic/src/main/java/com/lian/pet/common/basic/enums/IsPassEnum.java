@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * @Desc: 领养申请状态枚举
  * @Author: Lian
- * @Time: 2022/1/27 12:02
+ * @Time: 2023/5/18 19:02
  */
 public enum IsPassEnum {
 

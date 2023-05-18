@@ -1,7 +1,6 @@
 package com.lian.pet.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,6 +26,9 @@ import com.lian.pet.service.PetFindService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +36,7 @@ import java.util.stream.Collectors;
 /**
  * @Desc:
  * @Author: Lian
- * @Time: 2022/1/24 15:37
+ * @Time: 2023/5/18 19:02
  */
 @Slf4j
 @AllArgsConstructor
@@ -68,7 +70,7 @@ public class PetAdoptServiceImpl implements PetAdoptService {
     }
 
     @Override
-    public AdoptAndUserVO getPetAdoptById(Integer adoptId, String userId) {
+    public AdoptAndUserVO getPetAdoptById(Integer adoptId, Integer applyId, String userId) {
         PetAdopt petAdopt = petAdoptMapper.selectById(adoptId);
         PetAdopt adopt = new PetAdopt();
         adopt.setId(adoptId);
@@ -92,12 +94,20 @@ public class PetAdoptServiceImpl implements PetAdoptService {
                 .build();
 
         // 申请状态
-        AdoptApply adoptApply = adoptApplyMapper.selectOne(Wrappers.<AdoptApply>lambdaQuery()
-                .eq(AdoptApply::getAdoptId, adoptId)
-                .eq(AdoptApply::getUserId, userId));
+        AdoptApply adoptApply;
+        if (applyId != null) {
+            adoptApply = adoptApplyMapper.selectOne(Wrappers.<AdoptApply>lambdaQuery().eq(AdoptApply::getId, applyId));
+        } else {
+            List<AdoptApply> adoptApplies = adoptApplyMapper.selectList(Wrappers.<AdoptApply>lambdaQuery()
+                    .eq(AdoptApply::getAdoptId, adoptId)
+                    .eq(AdoptApply::getUserId, userId)
+                    .orderByDesc(AdoptApply::getCreateTime)
+                    .last("limit 1"));
+            adoptApply = CollectionUtils.isEmpty(adoptApplies) ? null : adoptApplies.get(0);
+        }
         if (ObjectUtils.isEmpty(adoptApply)) {
             resultVO.getPetAdoptVO().setIsApply("3");
-        } else {
+        }else {
             if (adoptApply.getIsPassed().equals(IsPassEnum.NO_PASS.code())) {
                 resultVO.getPetAdoptVO().setIsApply("0");
             } else if (adoptApply.getIsPassed().equals(IsPassEnum.PASSED.code())) {

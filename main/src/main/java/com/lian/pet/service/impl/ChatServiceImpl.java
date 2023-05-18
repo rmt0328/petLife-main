@@ -92,11 +92,9 @@ public class ChatServiceImpl implements ChatService {
             chatCountVOS.add(chatCountVO);
         });
         // 根据userId去重
-        List<ChatCountVO> collect = chatCountVOS.stream()
+        return chatCountVOS.stream()
                 .filter(distinctByKey(ChatCountVO::getUserId))
                 .collect(Collectors.toList());
-//        log.info("执行成功[查询聊天消息数量]");
-        return collect;
     }
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
@@ -135,7 +133,7 @@ public class ChatServiceImpl implements ChatService {
                 chatMapper.updateById(chat);
             }
         });
-        log.info("执行成功[查询聊天详情]");
+//        log.info("执行成功[查询聊天详情]");
         return chatVOS;
     }
 

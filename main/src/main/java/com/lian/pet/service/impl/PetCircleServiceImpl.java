@@ -51,13 +51,13 @@ public class PetCircleServiceImpl implements PetCircleService {
 
     @Override
     public List<PetCircleVO> queryPetCircles(QueryPetCircleDTO req) {
-        String cacheField = req.getPageNum().toString().concat(StringUtils.isNotBlank(req.getOpenId()) ? req.getOpenId() : "");
-        Object obj = redisService.hGet(DataTypeEnum.CIRCLE.name(), cacheField);
-        if (!ObjectUtils.isEmpty(obj)) {
-            CacheList cacheList = JSONObject.parseObject(obj.toString(), CacheList.class);
-            log.info("取出缓存中数据");
-            return cacheList.getPetCircleVOS();
-        }
+//        String cacheField = req.getPageNum().toString().concat(StringUtils.isNotBlank(req.getOpenId()) ? req.getOpenId() : "");
+//        Object obj = redisService.hGet(DataTypeEnum.CIRCLE.name(), cacheField);
+//        if (!ObjectUtils.isEmpty(obj)) {
+//            CacheList cacheList = JSONObject.parseObject(obj.toString(), CacheList.class);
+//            log.info("取出缓存中数据");
+//            return cacheList.getPetCircleVOS();
+//        }
         IPage<PetCircle> page = new Page<>(req.getPageNum(), req.getPageSize());
         IPage<PetCircle> iPage = petCircleMapper.selectPage(page, Wrappers.<PetCircle>lambdaQuery()
                 .eq(StringUtils.isNotBlank(req.getOpenId()), PetCircle::getUserId, req.getOpenId())
@@ -73,10 +73,10 @@ public class PetCircleServiceImpl implements PetCircleService {
             petCircleVOS.add(petCircleVO);
         });
         // 缓存列表数据
-        redisService.hPut(DataTypeEnum.CIRCLE.name(), cacheField,
-                JSONObject.toJSONString(CacheList.builder()
-                .petCircleVOS(petCircleVOS)
-                .build()));
+//        redisService.hPut(DataTypeEnum.CIRCLE.name(), cacheField,
+//                JSONObject.toJSONString(CacheList.builder()
+//                .petCircleVOS(petCircleVOS)
+//                .build()));
         log.info("执行成功[查询宠物圈列表]");
         return petCircleVOS;
     }

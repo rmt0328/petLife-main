@@ -30,7 +30,6 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleVO> queryArticles(QueryArticleDTO req) {
         IPage<Article> page = new Page<>(req.getPageNum(), req.getPageSize());
         IPage<Article> iPage = articleMapper.selectPage(page, Wrappers.<Article>lambdaQuery()
-                .groupBy(StringUtils.isBlank(req.getLabel()), Article::getLabel)
                 .eq(StringUtils.isNotBlank(req.getLabel()), Article::getLabel, req.getLabel())
                 .orderByDesc(Article::getUpdateTime));
         List<ArticleVO> articleVOS = iPage.getRecords().stream()
