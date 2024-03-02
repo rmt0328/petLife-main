@@ -11,7 +11,7 @@
  Target Server Version : 50734 (5.7.34-log)
  File Encoding         : 65001
 
- Date: 18/05/2023 23:30:09
+ Date: 24/05/2023 22:50:01
 */
 
 SET NAMES utf8mb4;
@@ -194,6 +194,43 @@ INSERT INTO `comment` VALUES (23, NULL, NULL, '312232131', 'FIND', 3, 'oh2iA5D5r
 INSERT INTO `comment` VALUES (24, NULL, NULL, '111', 'CIRCLE', 7, 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', 0, '0', '2022-09-27 21:02:09', NULL);
 
 -- ----------------------------
+-- Table structure for complaint
+-- ----------------------------
+DROP TABLE IF EXISTS `complaint`;
+CREATE TABLE `complaint`  (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `content` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '举报内容',
+  `wechat` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '手机号/微信号',
+  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '类型（1-领养人、2-送养人）',
+  `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '性别（1-男、2-女、3-未知）',
+  `city` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '所在城市',
+  `address` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '具体地址',
+  `images` json NULL COMMENT '图片',
+  `user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '状态（1-审核中、2-已通过、3-未通过）',
+  `is_deleted` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '0-正常 1-删除',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '举报信息' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of complaint
+-- ----------------------------
+INSERT INTO `complaint` VALUES (2, '測試1', 'asaddsa', '1', '1', '杭州', 'xx小区', '[\"www.baidu.com\", \"www.baidu2.com\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:05:39', '2023-05-22 21:58:59');
+INSERT INTO `complaint` VALUES (3, '测试2', 'wqwe', '2', '2', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '2', '0', '2023-05-21 20:23:11', '2023-05-22 21:59:13');
+INSERT INTO `complaint` VALUES (4, '测试4', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:23:11', '2023-05-22 21:58:59');
+INSERT INTO `complaint` VALUES (5, '测试5', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:23:11', '2023-05-22 21:59:23');
+INSERT INTO `complaint` VALUES (6, '测试6', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:23:11', '2023-05-22 21:58:59');
+INSERT INTO `complaint` VALUES (7, '测试7', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '3', '0', '2023-05-21 20:23:11', '2023-05-22 21:59:59');
+INSERT INTO `complaint` VALUES (8, '测试8', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:23:11', '2023-05-22 21:58:59');
+INSERT INTO `complaint` VALUES (9, '测试9', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:23:11', '2023-05-22 21:58:59');
+INSERT INTO `complaint` VALUES (10, '测试10', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:23:11', '2023-05-22 21:58:59');
+INSERT INTO `complaint` VALUES (11, '测试11', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:23:11', '2023-05-22 21:58:59');
+INSERT INTO `complaint` VALUES (12, '测试12', 'wqwe', '2', '1', '武汉', 'xx小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/aFuS7nfPE6xn142a346cf36b7adee35f89674f6ef0a8.jpg\", \"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/21/5hS8XSTcaWiva335b2b66c2e289ae4c0bfb5d3208304.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', '0', '2023-05-21 20:23:11', '2023-05-22 21:58:59');
+INSERT INTO `complaint` VALUES (13, '举报', 'aaa', '1', '1', '武汉', 'xx 小区', '[\"https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/24/tmp_9ade0a302463eafec4ec9b4da61a586cb1353041f72488fa.jpg\"]', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '2', '0', '2023-05-24 22:43:56', '2023-05-24 22:47:03');
+
+-- ----------------------------
 -- Table structure for credits
 -- ----------------------------
 DROP TABLE IF EXISTS `credits`;
@@ -238,12 +275,13 @@ CREATE TABLE `pet_adopt`  (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '宠物领养' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '宠物领养' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pet_adopt
 -- ----------------------------
 INSERT INTO `pet_adopt` VALUES (1, '我的狗狗', '小黄', '13100000000', '2', 'https://pet-life.oss-cn-beijing.aliyuncs.com/', '\"images/2023/05/18/PdKQbPPdiXT3142a346cf36b7adee35f89674f6ef0a8.jpg\"', '1', '已免疫, 已驱虫, 已绝育', '4-6月', '仅限同城, 工作稳定, 接收回访, 签订领养协议, 不得遗弃、转让、贩卖、虐待', '武汉', '测试', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '0', 81, '0', '2023-05-18 21:34:53', '2023-05-18 23:20:52');
+INSERT INTO `pet_adopt` VALUES (6, '测试2', '1', '1', '1', 'https://pet-life.oss-cn-beijing.aliyuncs.com/', '\"images/2023/05/21/dSvBKj3bEsZAa335b2b66c2e289ae4c0bfb5d3208304.jpg\"', '1', '已免疫', '0-3月', '仅限同城', '武汉', '1', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', 0, '0', '2023-05-16 19:32:30', '2023-05-24 16:47:21');
 
 -- ----------------------------
 -- Table structure for pet_circle
@@ -316,13 +354,15 @@ CREATE TABLE `pet_find`  (
   `is_deleted` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '0-正常 1-删除',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`, `is_deleted`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '寻宠' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pet_find
 -- ----------------------------
-INSERT INTO `pet_find` VALUES (5, '狗狗丢失', '小王', '13222222222', '金毛', '2', 'https://pet-life.oss-cn-beijing.aliyuncs.com/', '\"images/2022/09/27/wVNwa0hqZXF4c40895490ce7d72b8e9995b8d11638e3.png\"', '1', '7-12月', '杭州', '2222', '121222', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', 5, '0', '2022-09-27 21:03:15', '2023-05-18 23:11:05');
+INSERT INTO `pet_find` VALUES (1, '测试', '小明', '13100000001', '小白', '2', 'https://pet-life.oss-cn-beijing.aliyuncs.com/', '\"images/2022/09/27/wVNwa0hqZXF4c40895490ce7d72b8e9995b8d11638e3.png\"', '0', '7-12月', '杭州', '12121', '测试测试测试', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', 0, '0', '2023-05-24 16:24:11', '2023-05-24 16:24:15');
+INSERT INTO `pet_find` VALUES (2, '测试1', '小明', '13100000001', '小白', '2', 'https://pet-life.oss-cn-beijing.aliyuncs.com/', '\"images/2022/09/27/wVNwa0hqZXF4c40895490ce7d72b8e9995b8d11638e3.png\"', '0', '7-12月', '杭州', '12121', '测试测试测试', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '1', 0, '0', '2023-05-24 16:24:11', '2023-05-24 16:24:15');
+INSERT INTO `pet_find` VALUES (5, '狗狗丢失', '小王', '13222222222', '金毛', '2', 'https://pet-life.oss-cn-beijing.aliyuncs.com/', '\"images/2022/09/27/wVNwa0hqZXF4c40895490ce7d72b8e9995b8d11638e3.png\"', '1', '7-12月', '杭州', '2222', '121222', 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', '0', 5, '0', '2022-09-27 21:03:15', '2023-05-24 22:34:14');
 
 -- ----------------------------
 -- Table structure for user_follow
@@ -365,12 +405,12 @@ CREATE TABLE `wx_user`  (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wx_user
 -- ----------------------------
-INSERT INTO `wx_user` VALUES (3, 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', 'khSQZSB1WC4Aaq9uBLOgYw==', 'null', '微信用户', 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132', '', '', '', '0', '', NULL, 'WECHAT_MP', '0', '0', '2022-01-31 21:23:23', '2023-05-18 23:16:31');
+INSERT INTO `wx_user` VALUES (3, 'oh2iA5D5r4ICUzQOwuxz2Kqvba3Y', 'FrZi6+j0hq2AC+YBCWtKcg==', 'null', '时来运转 11', 'https://pet-life.oss-cn-beijing.aliyuncs.com/images/2023/05/24/tmp_e8fe234890d28966ff47b5ab3d1775b5de2b113acb16f137.jpg', '', '', '', '1', '1310000002', NULL, 'WECHAT_MP', '0', '0', '2022-01-31 21:23:23', '2023-05-24 22:43:18');
 INSERT INTO `wx_user` VALUES (4, 'oh2iA5AVCtjvCfxA9XKPDB0yqhp0', 'jgynVPkm8Gfp0LyJI7jxtA==', 'null', '微信用户', 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132', '', '', '', '0', NULL, NULL, 'WECHAT_MP', '0', '0', '2023-05-18 21:39:43', '2023-05-18 23:17:59');
 
 SET FOREIGN_KEY_CHECKS = 1;

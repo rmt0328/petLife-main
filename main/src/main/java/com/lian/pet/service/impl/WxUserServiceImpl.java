@@ -1,5 +1,6 @@
 package com.lian.pet.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lian.pet.common.basic.utils.HttpRequest;
@@ -67,8 +68,10 @@ public class WxUserServiceImpl implements WxUserService {
         WxUser wxUser = wxUserMapper.selectOne(Wrappers.<WxUser>lambdaQuery().eq(WxUser::getOpenId, openId));
         // 已注册 返回用户信息
         if (!ObjectUtils.isEmpty(wxUser)) {
-            wxUser = ResponseBeanFactory.getWxUser(openId, sessionKey, unionId, req);
-            wxUserMapper.update(wxUser, Wrappers.<WxUser>lambdaQuery().eq(WxUser::getOpenId, openId));
+            WxUserDTO wxUserDTO = BeanUtil.copyProperties(wxUser, WxUserDTO.class);
+            wxUserDTO.setNickname(wxUser.getNickName());
+            wxUser = ResponseBeanFactory.getWxUser(openId, sessionKey, unionId, wxUserDTO);
+//            wxUserMapper.update(wxUser, Wrappers.<WxUser>lambdaQuery().eq(WxUser::getOpenId, openId));
             log.info("执行成功[用户登录]");
             return WxUserVO.fromWxUser(wxUser);
         }
@@ -165,6 +168,13 @@ public class WxUserServiceImpl implements WxUserService {
         }
         log.info("执行成功[手机号码登录],phone={}", phone);
         return WxUserVO.fromWxUser(wxUser);
+    }
+
+    @Override
+    public Boolean updateUser(WxUserDTO req) {
+        WxUser wxUser = BeanUtil.copyProperties(req, WxUser.class);
+        wxUser.setNickName(req.getNickname());
+        return wxUserMapper.update(wxUser, Wrappers.<WxUser>lambdaQuery().eq(WxUser::getOpenId, req.getOpenId())) > 0;
     }
 
 }

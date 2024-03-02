@@ -65,4 +65,9 @@ public class UserController {
         return AppResp.succeed(wxUserService.phoneLogin(phone, password));
     }
 
+    @PostMapping("/updateUser")
+    public AppResp<Boolean> updateUser(@RequestBody WxUserDTO req) {
+        return AppResp.succeed(wxUserService.updateUser(req));
+    }
+
 }

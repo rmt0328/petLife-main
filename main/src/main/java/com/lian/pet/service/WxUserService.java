@@ -41,4 +41,6 @@ public interface WxUserService {
      * @return
      */
     WxUserVO phoneLogin(String phone, String password);
+
+    Boolean updateUser(WxUserDTO req);
 }

@@ -31,4 +31,7 @@ public class WxUserDTO {
     @ApiModelProperty(value = "邮箱")
     private String email;
 
+    @ApiModelProperty(value = "openId")
+    private String openId;
+
 }

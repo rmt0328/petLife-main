@@ -8,9 +8,9 @@ spring:
   # 数据库连接
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://127.0.0.1:3306/pet_life?characterEncoding=utf8&useSSL=false
-    username: root
-    password: root
+    url: jdbc:p6spy:mysql://yexingyi.love:3306/pet_life?characterEncoding=utf8&useSSL=false
+    username: pet
+    password: petpetpet
 
   # redis 配置
   redis:
@@ -37,8 +37,8 @@ spring:
 wechat:
   # 微信小程序
   applet:
-    app-id: wx49d52c9c666c7a99
-    app-secret: a684baf7d99cac65f43610bd3489459d
+    app-id: xxxx
+    app-secret: xxxx
     access-token-api-url: https://api.weixin.qq.com/sns/jscode2session
 
 # 打印 sql 语句到控制台

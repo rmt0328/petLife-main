@@ -40,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/chat/**",
                     "/userFollow/**",
                     "/answer/**",
-                    "/collect/**")
+                    "/collect/**",
+                    "/complaint/**")
             .permitAll()
             .anyRequest() // 任何请求
             .authenticated() // 需要身份认证
