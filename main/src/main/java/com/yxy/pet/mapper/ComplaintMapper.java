@@ -1,0 +1,16 @@
+package com.yxy.pet.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yxy.pet.domain.entity.Complaint;
+
+/**
+ * <p>
+ * 举报信息 Mapper 接口
+ * </p>
+ *
+ * @author yxy
+ * @since 2023-05-21
+ */
+public interface ComplaintMapper extends BaseMapper<Complaint> {
+
+}

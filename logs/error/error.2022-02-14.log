@@ -1,5 +1,5 @@
-[2022-02-14 17:43:18.429] [http-nio-9998-exec-2] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is com.alibaba.fastjson.JSONException: default constructor not found. class com.lian.pet.domain.vo.PetAdoptVO] with root cause
-com.alibaba.fastjson.JSONException: default constructor not found. class com.lian.pet.domain.vo.PetAdoptVO
+[2022-02-14 17:43:18.429] [http-nio-9998-exec-2] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is com.alibaba.fastjson.JSONException: default constructor not found. class vo.domain.com.yxy.pet.PetAdoptVO] with root cause
+com.alibaba.fastjson.JSONException: default constructor not found. class vo.domain.com.yxy.pet.PetAdoptVO
 	at com.alibaba.fastjson.util.JavaBeanInfo.build(JavaBeanInfo.java:574)
 	at com.alibaba.fastjson.parser.ParserConfig.createJavaBeanDeserializer(ParserConfig.java:1002)
 	at com.alibaba.fastjson.parser.ParserConfig.getDeserializer(ParserConfig.java:888)
@@ -12,8 +12,8 @@ com.alibaba.fastjson.JSONException: default constructor not found. class com.lia
 	at com.alibaba.fastjson.JSON.parseObject(JSON.java:394)
 	at com.alibaba.fastjson.JSON.parseObject(JSON.java:298)
 	at com.alibaba.fastjson.JSON.parseObject(JSON.java:588)
-	at com.lian.pet.service.impl.PetAdoptServiceImpl.queryAdoptList(PetAdoptServiceImpl.java:61)
-	at com.lian.pet.controller.PetAdoptController.queryPetAdopts(PetAdoptController.java:51)
+	at impl.service.com.yxy.pet.PetAdoptServiceImpl.queryAdoptList(PetAdoptServiceImpl.java:61)
+	at controller.com.yxy.pet.PetAdoptController.queryPetAdopts(PetAdoptController.java:51)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>pet</artifactId>
-        <groupId>com.lian</groupId>
+        <groupId>com.yxy</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -14,18 +14,18 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.lian</groupId>
+            <groupId>com.yxy</groupId>
             <artifactId>basic</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.lian</groupId>
+            <groupId>com.yxy</groupId>
             <artifactId>aliyun</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.lian</groupId>
+            <groupId>com.yxy</groupId>
             <artifactId>redis</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>

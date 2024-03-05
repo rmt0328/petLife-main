@@ -13,7 +13,7 @@
         <version>2.6.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.lian</groupId>
+    <groupId>com.yxy</groupId>
     <artifactId>pet</artifactId>
     <version>1.0.0</version>
     <name>pet</name>
