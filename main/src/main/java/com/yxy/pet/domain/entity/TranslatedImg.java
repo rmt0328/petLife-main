@@ -22,7 +22,7 @@ public class TranslatedImg implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    private String userId;
+    private String userOpenId;
 
     private String url;
 

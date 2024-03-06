@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @Desc: User Controller
  * @Author: yxy
@@ -23,11 +25,15 @@ public class UserController {
     private final WxUserService wxUserService;
 
     @PostMapping("/login")
-    public AppResp<WxUserVO> getOpenId(@RequestBody WxUserDTO req) {
+    public AppResp<WxUserVO> getOpenId(@RequestBody WxUserDTO req, HttpSession session) {
         log.info("[==========进入user/login方法==========]");
         log.info("微信授权登录");
         log.info("code值：{}", req.getCode());
         WxUserVO wxUserVO = wxUserService.login(req.getCode(), req);
+        if (wxUserVO != null) {
+            session.setAttribute("currentUser", wxUserVO);
+            log.info("用户信息已存储在会话中");
+        }
         return AppResp.succeed(wxUserVO);
     }
 

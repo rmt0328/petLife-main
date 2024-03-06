@@ -8,9 +8,9 @@ spring:
   # 数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://82.157.165.193:3306/pet_life?characterEncoding=utf8&useSSL=false
-    username: root
-    password: root
+    url: jdbc:mysql://39.105.187.217:3306/pet_life?characterEncoding=utf8&useSSL=false
+    username: pet
+    password: petpetpet
 
   # redis 配置
   redis:
@@ -31,12 +31,16 @@ spring:
   # 设置文件上传大小
   servlet:
     multipart:
-      max-file-size: 10MB
+      max-file-size: 100MB
       max-request-size: 100MB
 
 wechat:
   # 微信小程序
   applet:
-    app-id: xxxx
-    app-secret: xxxx
+    app-id: wx04bf50bd25925567
+    app-secret: 73573a0019739716c0fb7ae238c97dd8
     access-token-api-url: https://api.weixin.qq.com/sns/jscode2session
+
+translation:
+  predict:
+    url: http://39.105.187.217:8101/predict

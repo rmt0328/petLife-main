@@ -56,7 +56,7 @@ public class WxUserServiceImpl implements WxUserService {
         String response = HttpRequest.sendPost(url, param);
         log.info("微信返回的结果：{}", response);
         Map responseMap = JSONObject.parseObject(response, HashMap.class);
-        // oEgDe5clk5QtAgQSrDhq7ajKiVzE
+
         String openId = String.valueOf(responseMap.get("openid"));
         if (ObjectUtils.isEmpty(responseMap.get("openid"))) {
             log.error("微信接口调用失败, resp: {}", response);

@@ -2,12 +2,14 @@ package com.yxy.pet.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yxy.pet.domain.entity.Chat;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
  * @author yxy
  */
+@Mapper
 public interface ChatMapper extends BaseMapper<Chat> {
 
     /**
