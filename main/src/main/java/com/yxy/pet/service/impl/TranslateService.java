@@ -9,7 +9,9 @@ import com.yxy.pet.domain.entity.PredictionResult;
 import com.yxy.pet.domain.entity.ResnetResult;
 import com.yxy.pet.domain.entity.TranslatedImg;
 import com.yxy.pet.domain.model.ResponseMsg;
+import com.yxy.pet.mapper.ResnetResultMapper;
 import com.yxy.pet.mapper.TranslatedImgMapper;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,9 @@ public class TranslateService {
     @Autowired
     private TranslatedImgMapper translatedImgMapper;
 
+    @Autowired
+    private ResnetResultMapper resnetResultMapper;
+
     public AppResp<PredictionResult> predict(MultipartFile file,WxUserDTO wxUserDTO) throws IOException {
         String originFileName= ossService.uploadObjectOSS(file);
 
@@ -54,6 +59,8 @@ public class TranslateService {
         translatedImg.setUserOpenId(wxUserDTO.getOpenId());
 
         translatedImgMapper.insert(translatedImg);
+
+        Integer translatedId = translatedImg.getId();
 
         File cfile = new File(Objects.requireNonNull(file.getOriginalFilename()));
 
@@ -75,6 +82,12 @@ public class TranslateService {
             String predictImgName= ossService.uploadObjectOSS(pngImg);
 
             resnetResult.setImg(predictImgName);
+
+            resnetResult.setPredictId(translatedId.toString());
+
+            resnetResult.setUserOpenId(wxUserDTO.getOpenId());
+
+            resnetResultMapper.insert(resnetResult);
 
             log.info("上传图片成功:"+predictImgName,resnetResult);
 

@@ -23,7 +23,7 @@ public class ResnetResult implements Serializable {
 
     private String predictId;
 
-    private String userId;
+    private String userOpenId;
 
     private String img;
 
