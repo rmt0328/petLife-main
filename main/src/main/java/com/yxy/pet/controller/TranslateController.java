@@ -6,10 +6,7 @@ import com.yxy.pet.domain.entity.PredictionResult;
 import com.yxy.pet.service.impl.TranslateService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,15 +22,31 @@ import java.io.IOException;
 @AllArgsConstructor
 public class TranslateController {
     private TranslateService translateService;
-
     @PostMapping("predictImg")
-    public AppResp<PredictionResult> predict(MultipartFile file/*, @RequestBody WxUserDTO wxUserDTO*/){
+    public AppResp<PredictionResult> predict(String url,String openId){
         try {
-            WxUserDTO wxUserDTO1 = new WxUserDTO();
-            wxUserDTO1.setOpenId("oAMiG6weVjAXf15wvfBBTPmT_gsk");
-            return translateService.predict(file, wxUserDTO1);
+            return translateService.predict(url,openId);
         } catch (IOException e) {
             return AppResp.failed(-1,"解析失败:"+e.getMessage());
         }
     }
+
+    @GetMapping("getList")
+    public AppResp getList(String openId){
+        return translateService.getList(openId);
+    }
+
+
+    @PostMapping("predictImgByFile")
+    public AppResp<PredictionResult> predictByFile(MultipartFile file/*, @RequestBody WxUserDTO wxUserDTO*/){
+        try {
+            WxUserDTO wxUserDTO1 = new WxUserDTO();
+            wxUserDTO1.setOpenId("oAMiG6weVjAXf15wvfBBTPmT_gsk");
+            return translateService.predictByFile(file, wxUserDTO1);
+        } catch (IOException e) {
+            return AppResp.failed(-1,"解析失败:"+e.getMessage());
+        }
+    }
+
+
 }

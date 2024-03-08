@@ -1,5 +1,6 @@
 package com.yxy.pet.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yxy.pet.client.PredictClient;
 import com.yxy.pet.common.basic.response.AppResp;
 import com.yxy.pet.common.basic.utils.Base64ToPngConverter;
@@ -25,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -49,7 +51,49 @@ public class TranslateService {
     @Autowired
     private ResnetResultMapper resnetResultMapper;
 
-    public AppResp<PredictionResult> predict(MultipartFile file,WxUserDTO wxUserDTO) throws IOException {
+    public AppResp<PredictionResult> predict(String url,String openId) throws IOException {
+
+        TranslatedImg translatedImg = new TranslatedImg();
+
+        translatedImg.setUserOpenId(openId);
+
+        translatedImg.setUrl(url);
+
+        translatedImgMapper.insert(translatedImg);
+
+        Integer translatedId = translatedImg.getId();
+
+        PredictionResult predictionResult =predictClient.predict(url);
+
+        if (predictionResult==null){
+            return AppResp.failed(-1L,"解析失败,请联系管理员");
+        }
+        // 遍历所有预测结果
+        for (Map.Entry<String, ResnetResult> entry : predictionResult.getResnetResult().entrySet()) {
+            ResnetResult resnetResult = entry.getValue();
+            String base64Image = resnetResult.getImg();
+
+            MultipartFile pngImg = Base64ToPngConverter.convertBase64ToMockMultipartFile(base64Image);
+
+
+            String predictImgName= ossService.uploadObjectOSS(pngImg);
+
+            resnetResult.setImg(predictImgName);
+
+            resnetResult.setPredictId(translatedId.toString());
+
+            resnetResult.setUserOpenId(openId);
+
+            resnetResultMapper.insert(resnetResult);
+
+            log.info("上传图片成功:"+predictImgName,resnetResult);
+
+        }
+        log.info("解析成功:"+predictionResult);
+        return AppResp.succeed(predictionResult, "解析成功");
+    }
+
+    public AppResp<PredictionResult> predictByFile(MultipartFile file,WxUserDTO wxUserDTO) throws IOException {
         String originFileName= ossService.uploadObjectOSS(file);
 
         TranslatedImg translatedImg = new TranslatedImg();
@@ -66,7 +110,7 @@ public class TranslateService {
 
         file.transferTo(cfile);
 
-        PredictionResult predictionResult =predictClient.predict(file);
+        PredictionResult predictionResult =predictClient.predictByFile(file);
 
         if (predictionResult==null){
             return AppResp.failed(-1L,"解析失败,请联系管理员");
@@ -93,5 +137,13 @@ public class TranslateService {
 
         }
         return AppResp.succeed(predictionResult, "解析成功");
+    }
+
+    public AppResp getList(String openId) {
+        // 查询用户该openId用户的翻译记录
+        QueryWrapper<TranslatedImg> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_open_id",openId);
+        List<TranslatedImg> translatedImgs = translatedImgMapper.selectList(wrapper);
+        return AppResp.succeed(translatedImgs,"查询成功");
     }
 }

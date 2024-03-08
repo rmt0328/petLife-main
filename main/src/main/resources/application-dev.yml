@@ -50,4 +50,5 @@ wechat:
 #宠物翻译
 translation:
   predict:
-    url: http://39.105.187.217:8101/predict
+    url-file: http://39.105.187.217:8101/predict
+    url: http://39.105.187.217:8101/predict_url
