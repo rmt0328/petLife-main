@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author YeXingyi
  * @version 1.0
@@ -20,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class PredictController {
     private PredictService predictService;
 
-    @RequestMapping("getByPredictId")
-    public AppResp<ResnetResult> getByPredictId(String predictId){
+    @RequestMapping("/getByPredictId")
+    public AppResp<List<ResnetResult>> getByPredictId(String predictId){
         return predictService.getByPredictId(predictId);
     }
 }

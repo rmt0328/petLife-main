@@ -139,11 +139,16 @@ public class TranslateService {
         return AppResp.succeed(predictionResult, "解析成功");
     }
 
-    public AppResp getList(String openId) {
+    public AppResp<List<TranslatedImg> > getList(String openId) {
         // 查询用户该openId用户的翻译记录
         QueryWrapper<TranslatedImg> wrapper = new QueryWrapper<>();
         wrapper.eq("user_open_id",openId);
         List<TranslatedImg> translatedImgs = translatedImgMapper.selectList(wrapper);
         return AppResp.succeed(translatedImgs,"查询成功");
+    }
+
+    public AppResp deleteById(String id) {
+        translatedImgMapper.deleteById(id);
+        return AppResp.succeed("删除成功");
     }
 }

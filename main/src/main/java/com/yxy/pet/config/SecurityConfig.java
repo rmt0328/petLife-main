@@ -42,7 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/answer/**",
                     "/collect/**",
                     "/complaint/**",
-                    "/translate/**"
+                    "/translate/**",
+                    "/predict/**"
                     )
             .permitAll()
             .anyRequest() // 任何请求

@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author YeXingyi
  * @version 1.0
@@ -20,10 +22,10 @@ public class PredictService {
     ResnetResultMapper resnetResultMapper;
 
 
-    public AppResp<ResnetResult> getByPredictId(String predictId) {
+    public AppResp<List<ResnetResult>> getByPredictId(String predictId) {
         QueryWrapper<ResnetResult> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("predict_id", predictId);
-        ResnetResult resnetResult = resnetResultMapper.selectOne(queryWrapper);
-        return AppResp.succeed(resnetResult);
+        List<ResnetResult> resnetResults = resnetResultMapper.selectList(queryWrapper);
+        return AppResp.succeed(resnetResults);
     }
 }
