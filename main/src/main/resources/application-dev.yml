@@ -1,5 +1,11 @@
 server:
   port: 9998
+  #ssl
+  ssl:
+     key-store: classpath:yexingyi.love.jks
+     key-store-password: f0xoalnn
+     key-store-type: JKS
+
 
 spring:
   application:
@@ -52,3 +58,6 @@ translation:
   predict:
     url-file: http://39.105.187.217:8101/predict
     url: http://39.105.187.217:8101/predict_url
+
+
+
