@@ -8,13 +8,13 @@ spring:
   # 数据库连接
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.105.187.217:3306/pet_life?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://8.130.70.97:3306/pet_life?characterEncoding=utf8&useSSL=false
     username: pet
     password: petpetpet
 
   # redis 配置
   redis:
-    host: 127.0.0.1
+    host: 8.130.70.97
     pool:
       max-active: 300
       max-idle: 300
@@ -43,6 +43,6 @@ wechat:
 
 translation:
   predict:
-    url-file: http://39.105.187.217:8101/predict
-    url: http://39.105.187.217:8101/predict_url
+    url-file: http://8.130.70.97:8101/predict
+    url: http://8.130.70.97:8101/predict_url
 

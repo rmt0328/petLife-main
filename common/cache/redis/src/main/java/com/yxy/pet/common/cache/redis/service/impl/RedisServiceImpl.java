@@ -21,6 +21,9 @@ import java.util.concurrent.TimeUnit;
  * @Author: yxy
  * @Time: 2022/1/24 15:28
  */
+
+//基于Spring框架的Redis缓存服务实现类，主要对Redis中存储的对象进行操作
+    //包括设置过期时间、判断key是否存在、删除key，获取value等
 @Slf4j
 @Service
 @AllArgsConstructor

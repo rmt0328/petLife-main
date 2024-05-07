@@ -13,7 +13,9 @@ import org.springframework.context.annotation.PropertySource;
  * @Time: 2022/1/26 10:31
  */
 @Data
+//注解指定属性的前缀是aliyun，将配置文件中以“aliyun"开头的属性值映射到该类的对应属性中
 @ConfigurationProperties(prefix = "aliyun")
+//指定配置文件位置
 @PropertySource(value = {"classpath:oss-conf.properties"}, encoding = "UTF-8")
 public class AliYunProperties {
     /**

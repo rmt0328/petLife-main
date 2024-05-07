@@ -75,9 +75,14 @@ public class AliYunOssServiceImpl implements AliYunOssService {
         String storePath = getStorePath();
         createFolder(ossProperties.getBucketName(), storePath);
         try {
+            //获取上传文件的原始文件名
             String fileName = file.getOriginalFilename();
+            //获取上传文件的大小
             Long fileSize = file.getSize();
+
+            //创建一个ObjectMetadata对象，用于设置上传文件的元数据信息
             ObjectMetadata metadata = new ObjectMetadata();
+
             metadata.setContentLength(file.getInputStream().available());
             // 指定该Object被下载时的网页的缓存行为
             metadata.setCacheControl("no-cache");
@@ -94,12 +99,14 @@ public class AliYunOssServiceImpl implements AliYunOssService {
             PutObjectResult putResult = ossClient.putObject(ossProperties.getBucketName(), storePath + fileName, file.getInputStream(), metadata);
             // 解析结果
             resultStr = storePath + fileName;
+            //记录上传成功后的唯一MD5数字签名
             log.info("唯一MD5数字签名:" + putResult.getETag());
             log.info("执行成功[上传图片]key:{}", resultStr);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
         }
+        //返回图片在OSS上的Url，通过ossProperties配置的URL前缀凭借上传成功后的文件路径
         return ossProperties.getUrlPrefix().concat(resultStr);
     }
 
